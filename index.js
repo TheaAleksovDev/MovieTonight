@@ -3,6 +3,7 @@ const moviesGrid = document.querySelector(".movies-grid")
 let app = document.querySelector(".app")
 let movieInfoPage = document.querySelector(".movieInfoPage")
 const closeBtn = document.querySelector(".close-btn")
+
 const genres = [
     {
       "id": 28,
@@ -103,12 +104,13 @@ async function loadTrendingMovies(){
 
 
 let trendingMovies = []
+let reccomendations = []
 document.addEventListener("DOMContentLoaded", loadSite())
 
 
 
 
-function abc(){
+function closeBtnFunction(){
   movieInfoPage.style.display = "none"
    app.style.display = "flex"
   
@@ -129,7 +131,7 @@ async function loadSite(){
     }catch(e){
         console.log("Error" + (e))
     }
-console.log(trendingMovies.results[1])
+console.log(trendingMovies.results)
 
     for(i=0; i<trendingMovies.results.length; i++){
         
@@ -155,12 +157,6 @@ console.log(trendingMovies.results[1])
 }
 
 
-
-
-
-
-
-
 async function loadMovie(movieID){
     const id = movieID
     const URL = `https://api.themoviedb.org/3/movie/${id}?api_key=67cf32bdad212a7cc907563a23e39342`;
@@ -170,19 +166,19 @@ async function loadMovie(movieID){
     console.log(movie)
     console.log("THIS MOVIE ABOVE")
     return movie 
-    }
+}
 
 
 async function loadRecommendations(movieID){
     const id = movieID
     const URL = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=67cf32bdad212a7cc907563a23e39342`;
     const res = await fetch(`${URL}`);
-    const movie = await res.json() 
-    console.log("THIS MOVIE UNDER")
-    console.log(movie)
-    console.log("THIS MOVIE ABOVE")
-    return movie 
-    }
+    const reccomendations = await res.json() 
+    console.log("recc MOVIE UNDER")
+    console.log("recc MOVIE ABOVE")
+    return reccomendations 
+    
+}
 
 
 
@@ -204,21 +200,27 @@ async function loadRecommendations(movieID){
 async function displayMovieDetails(movieID){
   app.style.display = "none"
   movieInfoPage.style.display = "flex"
+
+  try{    
+        reccomendations = await loadRecommendations(movieID)
+        console.log(reccomendations)
+  }catch(e){
+        console.log("Error" + (e))
+      }
+
+    function getGenres(){
+            for(i=0; i<movieInfo.genres.length ; i++){
+                    return `<h3 class="genre">${movieInfo.genres[i].name}</h3>`
+            }
+         }
+         
+
   let movieInfo = await loadMovie(movieID)
-  //THIS IS SUSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-    // let movieInfo = (function loadMovie(){
-    // let movieData
-    // fetch(`https://api.themoviedb.org/3/movie/${movieID}?api_key=67cf32bdad212a7cc907563a23e39342`)
-    // .then((res)=>res.json())
-    // .then((data)=> movieData = data) 
-    // return movieData
-    // })()
-
-  
-
-
-    console.log(movieInfo)
-    //THIS IS SUSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+  console.log("MOVIE INFO UNDER")
+      console.log(movieInfo)
+       console.log("MOVIE INFO ABOVE")
+    // console.log(getGenres(movieID,movieInfo))
+         console.log(getGenres())
     movieInfoPage.innerHTML = `<div class="details">
             <div class="movie-info">
                 <div class="infoo">
@@ -227,13 +229,11 @@ async function displayMovieDetails(movieID){
                         <h1 class="movie-title">${movieInfo.title}</h1>
                         <h2 class="date">Relase date: ${movieInfo.release_date}</h2>
                         <div class="vote">
-                            <h2 class="average-vote">rating: ${movieInfo.vote_average} <i class="fa-solid fa-star"></i></h2>
+                            <h2 class="average-vote">rating: ${(movieInfo.vote_average).toFixed(1)} <i class="fa-solid fa-star"></i></h2>
                             <h2 class="vote-count">all votes: ${movieInfo.vote_count}</h2>
                         </div>
                         <div class="genres">
-                    
-                            <h3 class="genre">Drama</h3>
-                            <h3 class="genre">Action</h3>
+                              ${getGenres()}
                         </div>
                         <div class="desc">
                             <h2>Plot: ${movieInfo.overview}</h2>
@@ -250,24 +250,49 @@ async function displayMovieDetails(movieID){
                         <div class="separator"></div>
                     </div>
                     
-                    <h1 class="rec-title">People who watched Pinokio also watch:</h1>
-                    <div class="rec-container">
-                        <div class="movie-card movie-rec">
-                            <img class="img-rec"></img>
-                            <h3 class="title-of-movie-rec">Little Mermaid</h3>
-                        </div>
-                        
+                    <h1 class="rec-title">People who watched ${movieInfo.title} also watch:</h1>
+
+                    <div class="rec-container">  
+
                     </div>
                     
                 </div>
-                <i class="fa-solid fa-circle-xmark close-btn" onclick="abc()"></i>
+                <i class="fa-solid fa-circle-xmark close-btn" onclick="closeBtnFunction()"></i>
             </div>
             
         </div>`
-         function getGenres(movie){
-            for(i=0; i<movie.genre_ids.length ; i++){
-                    return `<h3>${genres[movie.genre_ids]}</h3>`
-            }
-         }
+        let recom = document.querySelector(".reccomendations")
+        let movieInf = document.querySelector(".movie-info")
+        if(reccomendations.results.length > 0){
+          for(i=0; i<reccomendations.results.length; i++){
+        let recContainer = document.querySelector(".rec-container")
+        recContainer.innerHTML += `
+        <div class="movie-card movie-rec">
+  
+            <img class="img-rec" src=${img_path+reccomendations.results[i].poster_path} alt="Poster of ${reccomendations.results[i].title} "></img>
+            <h3 class="id" style="display: none;">${reccomendations.results[i].id}</h3>
+            
+        </div>`
+        //document.querySelector(".movie-card").addEventListener()
+    }
+        }else if (reccomendations.results.length === 0){
+          recom.style.display="none"
+          movieInf.style.height="500px"
+
+        }
+         
+    allMovies = document.querySelectorAll(".movie-card")
+    console.log(allMovies)
+    allMovies.forEach(movie=>{
+        movie.addEventListener('click',()=>{
+            const id = movie.querySelector(".id").textContent
+            
+            displayMovieDetails(id)
+        })
+    })
+      console.log(reccomendations)
+       
+        
 
 }
+//      <h3 class="title-of-movie-rec">${reccomendations.results[i].title}</h3>

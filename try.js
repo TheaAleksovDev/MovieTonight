@@ -11,7 +11,7 @@
 
 
 (async function loadMovie(){
-    const id = 532639
+    const id = 781099
 const URL = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=67cf32bdad212a7cc907563a23e39342`;
 const res = await fetch(`${URL}`);
 const movivie = await res.json() 

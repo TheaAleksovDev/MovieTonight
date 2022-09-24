@@ -30,7 +30,9 @@ header{
     box-shadow: 0px 10px 20px var(--darker);
 }
 img{
+    height: 300px;
     width: 200px;
+    object-fit: cover;
     margin: 0;
 
 }
@@ -54,6 +56,9 @@ img{
 .movie-card{
     position: relative;
 
+}
+.movie-card:hover{
+    cursor: pointer;
 }
 .title{
     display: flex;
@@ -139,7 +144,7 @@ img{
     flex-direction: column;
     margin-top: 50px;
         background-color: var(--lighter);
-    height: 900px;
+    height: 930px;
     color: var(--text);
     /* box-shadow: 10px 10px 5px var(--darker); */
     border-radius: 20px;
@@ -190,13 +195,13 @@ img{
     justify-content: center;
     align-items: center;
     margin-top: 5px;
+    padding: 0 5px;
 }
 .desc{
     color: var(--darker-text);
     height: 200px;
-
     width: 550px;
-    font-size: 10px;
+    font-size: 13px;
 
 }
 .input{
@@ -262,35 +267,34 @@ input:focus {
 }
 .rec-container{
     width: 95%;
-    height: 300px;
+    height: 350px;
     display: flex;
     overflow-x: scroll;
+    overflow-y: hidden;
 }
 .movie-rec{
     margin: 0 20px;
-    background-color: #003a61;
-    height: 100%;
+    height: 300px;
     width: 200px;
     position: relative;
 }
 .title-of-movie-rec{
     color: var(--rate);
     letter-spacing: 1px;
-    position: absolute;
-    background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0), var(--lighter));
-    bottom:0;
     margin: 0;
     text-align: center;
     width: 100%;
-    height: 120px;
+    height: 10px;
     display: flex;
     align-items:flex-end;
     justify-content: center;
     padding-bottom: 25px;
+    width: 200px;
 }
 ::-webkit-scrollbar {
     height: 10px;
     margin-top: 10px;
+    margin-bottom: 30p;
 }
 
 /* Track */
@@ -320,4 +324,11 @@ input:focus {
 .movieInfoPage{
     position: absolute;
     width: 100%;
+}
+.img-rec{
+    opacity: 0.5;
+    transition: 0.25s;
+}
+.img-rec:hover{
+    opacity: 1;
 }

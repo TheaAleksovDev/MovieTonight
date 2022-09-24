@@ -7,27 +7,37 @@
     --text: #b1d7ef;
     --darker-text:#71899a;
     --light-prime: #003a61;
+    --hard-dark:#000407;
 }
 body{
     background-color: var(--prime);
     font-family: 'Roboto', sans-serif;
     margin: 0;
 }
-
+.movies{
+    width: 85%;
+}
 .movies-grid {
     display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-gap: 10px;
-        margin-left: 30px;
+
         background-color: var(--prime);
+        margin-left: 240px;
 }
 header{
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    position: fixed;
     height: 60px;
     box-shadow: 0px 10px 20px var(--darker);
+    z-index: 101;
+    background-color: var(--prime);
+    width: 100%;
+}
+.rel{
+    position: relative;
 }
 .imagee{
     height: 300px;
@@ -37,8 +47,9 @@ header{
 
 }
 .app-title{
-    position: absolute;
+    position: fixed;
     left: 20px;
+    top: 0px;
     font-size: 25px;
     color: var(--rate);
 }
@@ -46,15 +57,23 @@ header{
     opacity: 0.5;
 }
 .sidebar{
-    width: 30%;
+    margin-top: 60px;
+    height: 100%;
+    position: fixed;
+    width: 200px;
     background-color: var(--darker);
     box-shadow: 0px 5px 10px var(--darker);
+    z-index: 102;
+    display: flex;
+    justify-content: center;
+
 }
 .app{
     display: flex;
 }
 .movie-card{
     position: relative;
+    height: 350px;
 
 }
 .movie-card:hover{
@@ -77,6 +96,8 @@ header{
 
 }
 .tr-title{
+    width: 100%;
+    margin-top: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -87,6 +108,7 @@ header{
     font-size: 50px;
     background-image: linear-gradient(to left, rgba(255, 0, 0, 0), var(--rate));
     height: 80px;
+    margin-left: 240px;
 }
 .rating{
     background-image: linear-gradient(to left, rgba(255, 0, 0, 0), var(--darker));
@@ -142,7 +164,8 @@ header{
     width: 1000px;
     position: relative;
     flex-direction: column;
-    margin-top: 50px;
+    margin-top: 100px;
+    margin-left: 100px;
         background-color: var(--lighter);
     height: 930px;
     color: var(--text);
@@ -188,7 +211,7 @@ header{
 .genre{
     margin-left: 10px;
     background-color: var(--light-prime);
-    width: 80px;
+    width: 150px;
     height: 30px;
     border-radius: 10px;
     display: flex;
@@ -391,5 +414,45 @@ input:focus {
     transition: 0.25s;
 }
 .img-rec:hover{
+    opacity: 1;
+}
+.genres-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.movies-by-genre-page{
+    display: flex;
+    width: 85%;
+    height: 85%;
+    background-color: var(--prime);
+    position: absolute;
+    z-index: 99;
+    flex-direction: column;
+    
+}
+.by-genre-grid{
+    display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-gap: 10px;
+        background-color: var(--prime);
+        margin-left: 240px;
+}
+.genree{
+    margin-top: 10px;
+    background-color: var(--prime);
+    border: 3px solid var(--prime);
+    color: var(--rate);
+    font-weight: 600;
+    height: 24px;
+    border-radius: 10px;
+    opacity: 0.5;
+    transition: 0.25s;
+}
+.genree:hover{
+    cursor: pointer;
+    background-color: var(--rate);
+        border: 3px solid var(--prime);
+        color: var(--prime);
     opacity: 1;
 }

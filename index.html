@@ -17,30 +17,39 @@
 </head>
 <body>
     <header>
-        <h1 class="app-title"><i class="fa-solid fa-film"></i> MovieTonight <i class="fa-solid fa-film"></i></h1>
-        <div class="search-part">
-            <div class="input">
-                <input type="text" placeholder="Search" class="search"></input>
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-            <div class="search-results" style="display: none;">
-                <h3 class="search-title">here are some results for "thor" , press Enter for more results</h3>
-
-                    
-                
+        <div class="rel">
+            <h1 class="app-title"><i class="fa-solid fa-film"></i> MovieTonight <i class="fa-solid fa-film"></i></h1>
+            <div class="search-part">
+                <div class="input">
+                    <input type="text" placeholder="Search" class="search"></input>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <div class="search-results" style="display: none;">
+                    <h3 class="search-title">here are some results for "thor" , press Enter for more results</h3>
+                </div>
             </div>
         </div>
+       
         
         
     </header>
+    <div class="sidebar" style="display: flex;">
+        <div class="genres-container" style="display: flex;"></div>
+    </div>
     <div class="app" style="display:flex;">
-        <div class="sidebar"></div>
+        
         <div class="movies">
             <h1 class="tr-title">TOP RATED</h1>
             <div class="movies-grid"  ></div>
         </div>   
     </div>
     <div class="movieInfoPage" style="display: flex;">
+    </div>
+    <div class="movies-by-genre-page" style="display: none;">
+        <h1 class="genre-title tr-title"></h1>
+        <div class="by-genre-grid">
+            
+        </div>
     </div>
     
     <script src="index.js"></script>

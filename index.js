@@ -5,6 +5,10 @@ let movieInfoPage = document.querySelector(".movieInfoPage")
 const closeBtn = document.querySelector(".close-btn")
 const input = document.querySelector(".search")
 const searchRes = document.querySelector(".search-results")
+const genresContainer = document.querySelector(".genres-container")
+const moviesByGenrePage = document.querySelector(".movies-by-genre-page")
+const byGenreGrid = document.querySelector(".by-genre-grid")
+
 const genres = [
     {
       "id": 28,
@@ -90,8 +94,9 @@ let key = `&api_key=67cf32bdad212a7cc907563a23e39342`
 let URL = `${baseUrl}/discover/movie?sort_by=popularity.desc${key}`
 
 
-
-
+genres.map((genre)=>{
+  genresContainer.innerHTML += `<button class="${genre.name} genree" onclick="loadByGenre(${genre.id})">${genre.name}</button>`
+})
 
 
 async function loadTrendingMovies(){
@@ -181,13 +186,44 @@ async function loadRecommendations(movieID){
     
 }
 
+async function loadByGenre(genreID){
+  app.style.display = "none"
+  moviesByGenrePage.style.display = "flex"
+  byGenreGrid.style.display = "grid"
+    const res = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${genreID}&sort_by=revenue.desc&api_key=67cf32bdad212a7cc907563a23e39342`);
+    const moviesByGenre = await res.json() 
+console.log("GENRE MOVIES UNDER")
 
+console.log(genres[1].id)
+console.log("GENRE MOVIES ABOVE")
 
+byGenreGrid.innerHTML = ""
+for(i=0; i<moviesByGenre.results.length; i++){
+byGenreGrid.innerHTML += `
+        <div class="movie-card">
+            <img class="imagee" src=${img_path+moviesByGenre.results[i].poster_path}></img>
+            <h1 class="title">${moviesByGenre.results[i].title}</h1>
+            <h3 class="rating">${moviesByGenre.results[i].vote_average} <i class="fa-solid fa-star"></i></h3>
+            <h3 class="id" style="display: none;">${moviesByGenre.results[i].id}</h3>            
+        </div>`
+}
+allMovies = document.querySelectorAll(".movie-card")
+    allMovies.forEach(movie=>{
+        movie.addEventListener('click',()=>{
+            const id = movie.querySelector(".id").textContent
+            
+            displayMovieDetails(id)
+        })
+    })
+let genreTitle = ""
+for(j=0 ;j<genres.length ; j++){
+  if(genres[j].id == genreID){
+    genreTitle = genres[j].name
+  }
+}
+document.querySelector(".genre-title").textContent =  await genreTitle
 
-
-
-
-
+}
 
 
 
@@ -200,6 +236,7 @@ async function loadRecommendations(movieID){
 
 async function displayMovieDetails(movieID){
   app.style.display = "none"
+  moviesByGenrePage.style.display = "none"
   movieInfoPage.style.display = "flex"
 
   try{    
@@ -328,7 +365,7 @@ searchRes.innerHTML = ""
   for(i=0; i<5; i++){
     
      searchRes.innerHTML += `<div class="movie-result movie-card">
-                    <img class="img-search" src="${img_path+searchResults.results[i].poster_path}""></img>
+                    <img class="img-search" src="${img_path+searchResults.results[i].poster_path}"></img>
                     
                     <div class="search-item-text">
                         <h3 class="title-search">${searchResults.results[i].title}</h3>
@@ -350,3 +387,10 @@ searchRes.innerHTML = ""
        
   }
 
+function homepage(){
+  searchRes.style.display= "none"
+  movieInfoPage.style.display = "none"
+  moviesByGenrePage.style.display = "none"
+  app.style.display = "flex"
+}
+document.querySelector(".app-title").addEventListener('click',()=>{homepage()})

@@ -10,14 +10,13 @@
 // })()
 
 
-// (async function loadMovie(){
-//     const URL = `https://api.themoviedb.org/3/search/movie?api_key=67cf32bdad212a7cc907563a23e39342&query=thor`;
-//     const res = await fetch(`${URL}`);
-//     const movivie = await res.json() 
-// console.log("SEARCH MOVIE UNDER")
-// console.log(movivie)
-// console.log("SEARCH MOVIE ABOVE")
-// })()
+(async function loadMovie(){
+    const res = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=35&sort_by=revenue.desc&api_key=67cf32bdad212a7cc907563a23e39342`);
+    const movivie = await res.json() 
+console.log("GENRE MOVIES UNDER")
+console.log(movivie)
+console.log("GENRE MOVIES ABOVE")
+})()
 
 // async function loadTrendingMovies(){
 //     const URL = `${base}/discover/movie?sort_by=popularity.desc${keyy}`;

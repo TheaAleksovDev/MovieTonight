@@ -425,7 +425,8 @@ input:focus {
     flex-direction: column;
 }
 
-.movies-by-genre-page{
+.movies-by-genre-page,
+.search-page{
     display: flex;
     width: 85%;
     height: 85%;
@@ -435,7 +436,8 @@ input:focus {
     flex-direction: column;
     
 }
-.by-genre-grid{
+.by-genre-grid,
+.search-grid{
     display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-gap: 10px;

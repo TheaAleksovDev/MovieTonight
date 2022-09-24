@@ -9,6 +9,9 @@ const genresContainer = document.querySelector(".genres-container")
 const moviesByGenrePage = document.querySelector(".movies-by-genre-page")
 const byGenreGrid = document.querySelector(".by-genre-grid")
 const movies = document.querySelector(".movies")
+const searchBtn = document.querySelector(".fa-magnifying-glass")
+const searchPage = document.querySelector(".search-page")
+const searchGrid = document.querySelector(".search-grid")
 const genres = [
     {
       "id": 28,
@@ -186,7 +189,10 @@ async function loadRecommendations(movieID){
 }
 
 async function loadByGenre(genreID){
+  input.value = ""
   app.style.display = "none"
+  searchRes.style.display= "none"
+  searchPage.style.display= "none"
   moviesByGenrePage.style.display = "flex"
   byGenreGrid.style.display = "grid"
     const res = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${genreID}&sort_by=revenue.desc&api_key=67cf32bdad212a7cc907563a23e39342`);
@@ -225,6 +231,7 @@ document.querySelector(".genre-title").textContent =  await genreTitle
 async function displayMovieDetails(movieID){
   app.style.display = "none"
   moviesByGenrePage.style.display = "none"
+   searchPage.style.display = "none"
   movieInfoPage.style.display = "flex"
 
   try{    
@@ -315,15 +322,14 @@ async function displayMovieDetails(movieID){
 //  input.onkeypress = (e)=>{
   
 
-  input.addEventListener('input',(e)=>{
-    if(e.key === "Enter"){
-        input.value = ""
-        searchRes.style.display= "none"
-      }else{
-        if(input.value != " "){
+  input.addEventListener("keyup", function(event) {
+    if(input.value != " "){
         search(input.value)
         } 
-  }})
+    if (event.keyCode === 13) {
+        searchPageFun(input.value)
+    }
+});
   window.addEventListener('click',(e)=>{
     if(!searchRes.contains(e.target)){
       searchRes.style.display= "none"
@@ -368,3 +374,36 @@ function homepage(){
   app.style.display = "flex"
 }
 document.querySelector(".app-title").addEventListener('click',()=>{homepage()})
+
+searchBtn.addEventListener('click',()=>{searchPageFun(input.value)})
+
+async function searchPageFun(value){
+  searchRes.style.display= "none"
+  app.style.display = "none"
+  searchPage.style.display="flex"
+    const URL = `https://api.themoviedb.org/3/search/movie?api_key=67cf32bdad212a7cc907563a23e39342&query=${value}`;
+    const res = await fetch(`${URL}`);
+    const searchResults = await res.json() 
+    console.log(searchResults)
+    searchGrid.innerHTML= ""
+    for(i=0; i<searchResults.results.length; i++){  
+     searchGrid.innerHTML += `<div class="movie-card">
+            <img class="imagee" src=${img_path+searchResults.results[i].poster_path}></img>
+            <h1 class="title">${searchResults.results[i].title}</h1>
+            <h3 class="rating">${searchResults.results[i].vote_average} <i class="fa-solid fa-star"></i></h3>
+            <h3 class="id" style="display: none;">${searchResults.results[i].id}</h3>
+            
+        </div>`
+  }
+  allMovies = document.querySelectorAll(".movie-card")
+
+    allMovies.forEach(movie=>{
+        movie.addEventListener('click',()=>{
+            const id = movie.querySelector(".id").textContent
+            searchRes.style.display= "none"
+            displayMovieDetails(id)
+
+        })
+    })
+
+}

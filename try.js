@@ -11,7 +11,7 @@
 
 
 (async function loadMovie(){
-    const res = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=35&sort_by=revenue.desc&api_key=67cf32bdad212a7cc907563a23e39342`);
+    const res = await fetch(`https://api.themoviedb.org/3/discover/movie/?certification_country=US&certification=R&sort_by=vote_average.desc&api_key=67cf32bdad212a7cc907563a23e39342`);
     const movivie = await res.json() 
 console.log("GENRE MOVIES UNDER")
 console.log(movivie)

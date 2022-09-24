@@ -8,7 +8,7 @@ const searchRes = document.querySelector(".search-results")
 const genresContainer = document.querySelector(".genres-container")
 const moviesByGenrePage = document.querySelector(".movies-by-genre-page")
 const byGenreGrid = document.querySelector(".by-genre-grid")
-
+const movies = document.querySelector(".movies")
 const genres = [
     {
       "id": 28,
@@ -107,10 +107,19 @@ async function loadTrendingMovies(){
     return trendingMovies
 }
 
+async function loadHighRatingMovies(){
+  
+    const URL = `${baseUrl}/discover/movie/?certification_country=US&certification=R&sort_by=vote_average.desc${key}`;
+    const res = await fetch(`${URL}`);
+    const highRateMovies = await res.json() 
+    return highRateMovies
+}
+
 
 
 let trendingMovies = []
 let reccomendations = []
+
 document.addEventListener("DOMContentLoaded", loadSite())
 
 
@@ -123,23 +132,20 @@ function closeBtnFunction(){
 }
 
 
-
-
-
-
 async function loadSite(){
     input.value = ""
     try{
         
         trendingMovies = await loadTrendingMovies()
+
+        
         
         
     }catch(e){
         console.log("Error" + (e))
     }
-console.log(trendingMovies.results)
 
-    for(i=0; i<trendingMovies.results.length; i++){
+         for(i=0; i<trendingMovies.results.length; i++){
         
         moviesGrid.innerHTML += `
         <div class="movie-card">
@@ -149,10 +155,8 @@ console.log(trendingMovies.results)
             <h3 class="id" style="display: none;">${trendingMovies.results[i].id}</h3>
             
         </div>`
-        //document.querySelector(".movie-card").addEventListener()
     }
     allMovies = document.querySelectorAll(".movie-card")
-    console.log(allMovies)
     allMovies.forEach(movie=>{
         movie.addEventListener('click',()=>{
             const id = movie.querySelector(".id").textContent
@@ -168,9 +172,6 @@ async function loadMovie(movieID){
     const URL = `https://api.themoviedb.org/3/movie/${id}?api_key=67cf32bdad212a7cc907563a23e39342`;
     const res = await fetch(`${URL}`);
     const movie = await res.json() 
-    console.log("THIS MOVIE UNDER")
-    console.log(movie)
-    console.log("THIS MOVIE ABOVE")
     return movie 
 }
 
@@ -180,8 +181,6 @@ async function loadRecommendations(movieID){
     const URL = `https://api.themoviedb.org/3/movie/${id}/recommendations?api_key=67cf32bdad212a7cc907563a23e39342`;
     const res = await fetch(`${URL}`);
     const reccomendations = await res.json() 
-    console.log("recc MOVIE UNDER")
-    console.log("recc MOVIE ABOVE")
     return reccomendations 
     
 }
@@ -192,10 +191,7 @@ async function loadByGenre(genreID){
   byGenreGrid.style.display = "grid"
     const res = await fetch(`https://api.themoviedb.org/3/discover/movie?with_genres=${genreID}&sort_by=revenue.desc&api_key=67cf32bdad212a7cc907563a23e39342`);
     const moviesByGenre = await res.json() 
-console.log("GENRE MOVIES UNDER")
 
-console.log(genres[1].id)
-console.log("GENRE MOVIES ABOVE")
 
 byGenreGrid.innerHTML = ""
 for(i=0; i<moviesByGenre.results.length; i++){
@@ -226,14 +222,6 @@ document.querySelector(".genre-title").textContent =  await genreTitle
 }
 
 
-
-
-
-
-
-
-
-
 async function displayMovieDetails(movieID){
   app.style.display = "none"
   moviesByGenrePage.style.display = "none"
@@ -241,7 +229,6 @@ async function displayMovieDetails(movieID){
 
   try{    
         reccomendations = await loadRecommendations(movieID)
-        console.log(reccomendations)
   }catch(e){
         console.log("Error" + (e))
       }
@@ -251,14 +238,7 @@ async function displayMovieDetails(movieID){
                     return `<h3 class="genre">${movieInfo.genres[i].name}</h3>`
             }
          }
-         
-
   let movieInfo = await loadMovie(movieID)
-  console.log("MOVIE INFO UNDER")
-      console.log(movieInfo)
-       console.log("MOVIE INFO ABOVE")
-    // console.log(getGenres(movieID,movieInfo))
-         console.log(getGenres())
     movieInfoPage.innerHTML = `<div class="details">
             <div class="movie-info">
                 <div class="infoo">
@@ -311,7 +291,6 @@ async function displayMovieDetails(movieID){
             <h3 class="id" style="display: none;">${reccomendations.results[i].id}</h3>
             
         </div>`
-        //document.querySelector(".movie-card").addEventListener()
     }
         }else if (reccomendations.results.length === 0){
           recom.style.display="none"
@@ -320,7 +299,6 @@ async function displayMovieDetails(movieID){
         }
          
     allMovies = document.querySelectorAll(".movie-card")
-    console.log(allMovies)
     allMovies.forEach(movie=>{
         movie.addEventListener('click',()=>{
             const id = movie.querySelector(".id").textContent
@@ -328,7 +306,6 @@ async function displayMovieDetails(movieID){
             displayMovieDetails(id)
         })
     })
-      console.log(reccomendations)
        
         
 
@@ -344,7 +321,6 @@ async function displayMovieDetails(movieID){
         searchRes.style.display= "none"
       }else{
         if(input.value != " "){
-          console.log(input.value)
         search(input.value)
         } 
   }})
@@ -358,9 +334,7 @@ async function search(value){
     const URL = `https://api.themoviedb.org/3/search/movie?api_key=67cf32bdad212a7cc907563a23e39342&query=${value}`;
     const res = await fetch(`${URL}`);
     const searchResults = await res.json() 
-console.log("SEARCH MOVIE UNDER")
-console.log(searchResults)
-console.log("SEARCH MOVIE ABOVE")
+
 searchRes.innerHTML = ""
   for(i=0; i<5; i++){
     
@@ -375,7 +349,7 @@ searchRes.innerHTML = ""
                 </div>`
   }
      allMovies = document.querySelectorAll(".movie-card")
-    console.log(allMovies)
+
     allMovies.forEach(movie=>{
         movie.addEventListener('click',()=>{
             const id = movie.querySelector(".id").textContent

@@ -17,7 +17,8 @@ body{
 .movies{
     width: 85%;
 }
-.movies-grid {
+.movies-grid,
+.griddd {
     display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-gap: 10px;
@@ -52,6 +53,9 @@ header{
     top: 0px;
     font-size: 25px;
     color: var(--rate);
+}
+.app-title:hover{
+    cursor: pointer;
 }
 .app-title i{
     opacity: 0.5;

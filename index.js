@@ -3,7 +3,8 @@ const moviesGrid = document.querySelector(".movies-grid")
 let app = document.querySelector(".app")
 let movieInfoPage = document.querySelector(".movieInfoPage")
 const closeBtn = document.querySelector(".close-btn")
-
+const input = document.querySelector(".search")
+const searchRes = document.querySelector(".search-results")
 const genres = [
     {
       "id": 28,
@@ -122,7 +123,7 @@ function closeBtnFunction(){
 
 
 async function loadSite(){
-    
+    input.value = ""
     try{
         
         trendingMovies = await loadTrendingMovies()
@@ -137,7 +138,7 @@ console.log(trendingMovies.results)
         
         moviesGrid.innerHTML += `
         <div class="movie-card">
-            <img src=${img_path+trendingMovies.results[i].poster_path}></img>
+            <img class="imagee" src=${img_path+trendingMovies.results[i].poster_path}></img>
             <h1 class="title">${trendingMovies.results[i].title}</h1>
             <h3 class="rating">${trendingMovies.results[i].vote_average} <i class="fa-solid fa-star"></i></h3>
             <h3 class="id" style="display: none;">${trendingMovies.results[i].id}</h3>
@@ -250,7 +251,7 @@ async function displayMovieDetails(movieID){
                         <div class="separator"></div>
                     </div>
                     
-                    <h1 class="rec-title">People who watched ${movieInfo.title} also watch:</h1>
+                    <h1 class="rec-title">People who watched "${movieInfo.title}" also watch:</h1>
 
                     <div class="rec-container">  
 
@@ -269,7 +270,7 @@ async function displayMovieDetails(movieID){
         recContainer.innerHTML += `
         <div class="movie-card movie-rec">
   
-            <img class="img-rec" src=${img_path+reccomendations.results[i].poster_path} alt="Poster of ${reccomendations.results[i].title} "></img>
+            <img class="img-rec imagee" src=${img_path+reccomendations.results[i].poster_path} alt="Poster of ${reccomendations.results[i].title} "></img>
             <h3 class="id" style="display: none;">${reccomendations.results[i].id}</h3>
             
         </div>`
@@ -295,4 +296,57 @@ async function displayMovieDetails(movieID){
         
 
 }
+
 //      <h3 class="title-of-movie-rec">${reccomendations.results[i].title}</h3>
+//  input.onkeypress = (e)=>{
+  
+
+  input.addEventListener('input',(e)=>{
+    if(e.key === "Enter"){
+        input.value = ""
+        searchRes.style.display= "none"
+      }else{
+        if(input.value != " "){
+          console.log(input.value)
+        search(input.value)
+        } 
+  }})
+  window.addEventListener('click',(e)=>{
+    if(!searchRes.contains(e.target)){
+      searchRes.style.display= "none"
+    }
+  })
+async function search(value){  
+  searchRes.style.display= "flex"
+    const URL = `https://api.themoviedb.org/3/search/movie?api_key=67cf32bdad212a7cc907563a23e39342&query=${value}`;
+    const res = await fetch(`${URL}`);
+    const searchResults = await res.json() 
+console.log("SEARCH MOVIE UNDER")
+console.log(searchResults)
+console.log("SEARCH MOVIE ABOVE")
+searchRes.innerHTML = ""
+  for(i=0; i<5; i++){
+    
+     searchRes.innerHTML += `<div class="movie-result movie-card">
+                    <img class="img-search" src="${img_path+searchResults.results[i].poster_path}""></img>
+                    
+                    <div class="search-item-text">
+                        <h3 class="title-search">${searchResults.results[i].title}</h3>
+                        <h4 class="desc-search">${(searchResults.results[i].overview).slice(0,180)}...</h4>
+                        <h3 class="id" style="display: none;">${searchResults.results[i].id}</h3>
+                    </div>
+                </div>`
+  }
+     allMovies = document.querySelectorAll(".movie-card")
+    console.log(allMovies)
+    allMovies.forEach(movie=>{
+        movie.addEventListener('click',()=>{
+            const id = movie.querySelector(".id").textContent
+            searchRes.style.display= "none"
+            displayMovieDetails(id)
+
+        })
+    })
+       
+  }
+

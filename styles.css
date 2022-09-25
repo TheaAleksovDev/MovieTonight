@@ -8,6 +8,7 @@
     --darker-text:#71899a;
     --light-prime: #003a61;
     --hard-dark:#000407;
+    --uncommon: #2c2c2c;
 }
 body{
     background-color: var(--prime);
